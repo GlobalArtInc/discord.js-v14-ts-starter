@@ -11,14 +11,15 @@ import {
 import { readdirSync } from "fs";
 import { Command } from "./Command";
 import { IBaseEvent } from "./Event";
+import { Database } from "./Database";
 import LoggerService from "../services/logger.service";
-
 export default class Client extends DiscordClient {
-  protected devMode = process.env.DEPLOY_ENV === "dev";
+  public devMode = process.env.DEPLOY_ENV === "dev";
+  public database = new Database();
   public commands: Collection<string, Command> = new Collection<string, Command>();
-  public readonly basePath = "/workspace/sip/discord/dist";
+  public readonly basePath = `${__dirname}/..`;
 
-  constructor(protected readonly loggerService = new LoggerService()) {
+  constructor() {
     super({
       partials: [Partials.Channel],
       intents: [
@@ -37,7 +38,8 @@ export default class Client extends DiscordClient {
     });
   }
 
-  init() {
+  async init() {
+    this.database.init();
     this.loadEvents();
     this.loadCommands();
   }
@@ -75,37 +77,36 @@ export default class Client extends DiscordClient {
   async registerCommands() {
     const commandDataArr = this.commands.map((command) => command.builder.toJSON());
     const rest = new REST({ version: "10" }).setToken(process.env.DISCORD_TOKEN);
-    if (this.devMode) {
-      try {
-        this.loggerService.info({
-          message: "Registering commands with DiscordAPI",
+
+    try {
+      LoggerService.info({
+        message: "Registering commands with DiscordAPI",
+      });
+
+      if (!this.devMode) {
+        LoggerService.info({
+          message: "Registering to any server this bot is in",
         });
+        const fullRoute = Routes.applicationCommands(process.env.DISCORD_USER_ID);
 
-        if (!this.devMode) {
-          this.loggerService.info({
-            message: "Registering to any server this bot is in",
-          });
-          const fullRoute = Routes.applicationCommands(process.env.DISCORD_USER_ID);
+        rest.put(fullRoute, {
+          body: commandDataArr,
+        });
+      } else {
+        LoggerService.info({
+          message: `Only registering in guild with "DISCORD_SERVER_ID" environment variable`,
+        });
+        if (!process.env.DISCORD_SERVER_ID) throw "DISCORD_SERVER_ID environment variable was not set!";
+        const fullRoute = Routes.applicationGuildCommands(process.env.DISCORD_USER_ID, process.env.DISCORD_SERVER_ID);
 
-          rest.put(fullRoute, {
-            body: commandDataArr,
-          });
-        } else {
-          this.loggerService.info({
-            message: `Only registering in guild with "DISCORD_SERVER_ID" environment variable`,
-          });
-          if (!process.env.DISCORD_SERVER_ID) throw "DISCORD_SERVER_ID environment variable was not set!";
-          const fullRoute = Routes.applicationGuildCommands(process.env.DISCORD_USER_ID, process.env.DISCORD_SERVER_ID);
-
-          rest.put(fullRoute, {
-            body: commandDataArr,
-          });
-        }
-      } catch (message) {
-        this.loggerService.error({
-          message,
+        rest.put(fullRoute, {
+          body: commandDataArr,
         });
       }
+    } catch (message) {
+      LoggerService.error({
+        message,
+      });
     }
   }
 
@@ -126,14 +127,14 @@ export default class Client extends DiscordClient {
       }
       const { user } = interaction;
 
-      this.loggerService.interaction({
+      LoggerService.interaction({
         guild,
         user: `${user.tag}`,
         command: command.builder.name,
         params,
       });
     } catch (message) {
-      this.loggerService.error({ message });
+      LoggerService.error({ message });
       await interaction.followUp({
         content: `There was an error while executing the \`${command.builder.name}\` command!`,
       });
@@ -141,11 +142,11 @@ export default class Client extends DiscordClient {
   }
 
   async start(): Promise<void> {
-    this.init();
+    await this.init();
     await this.registerCommands();
     await this.login(process.env.DISCORD_TOKEN);
     const { user } = this;
-    this.loggerService.info({
+    LoggerService.info({
       type: "initialization",
       username: user?.username,
     });

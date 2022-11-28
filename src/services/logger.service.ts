@@ -1,4 +1,4 @@
-export default class LoggerService {
+export class LoggerService {
   private log(type: string, data: Record<string, unknown>) {
     console.log({ type, ...data });
   }
@@ -15,3 +15,5 @@ export default class LoggerService {
     this.log("error", data);
   }
 }
+
+export default new LoggerService();
