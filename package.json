@@ -1,28 +1,27 @@
 {
-  "name": "discordjs-v14-template-ts",
+  "name": "discord.js-v14-ts-starter",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start:dev": "tsc-watch --onSuccess \"node ./dist/main.js\"",
-    "start": "cls && node dist/index.js"
+    "start": "node ./dist/main.js",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "MericcaN41",
   "license": "ISC",
   "dependencies": {
     "@discordjs/rest": "^1.1.0",
-    "@types/node": "^18.7.14",
-    "chalk": "^4.1.2",
     "discord.js": "14.3.0",
     "dotenv": "^16.0.3",
-    "mongoose": "^6.5.4",
     "pg": "^8.8.0",
     "tsc-watch": "^5.0.3",
     "typeorm": "^0.3.10",
     "typeorm-naming-strategies": "^4.1.0"
   },
   "devDependencies": {
+    "@types/node": "^18.7.14",
     "@typescript-eslint/eslint-plugin": "^5.17.0",
     "@typescript-eslint/parser": "^5.17.0",
     "eslint": "^8.12.0",

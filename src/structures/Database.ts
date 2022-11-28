@@ -1,24 +1,6 @@
 import { DataSource } from "typeorm";
 import LoggerService from "../services/logger.service";
 import { SnakeNamingStrategy } from "typeorm-naming-strategies";
-import { Users } from "../entities/users.entity";
-const { DB_HOST, DB_USER, DB_NAME, DB_PASS } = process.env;
-
-// export const appDataSource = new DataSource({
-//   type: "postgres",
-//   host: DB_HOST,
-//   port: 5432,
-//   database: DB_NAME,
-//   username: DB_USER,
-//   password: DB_PASS,
-//   synchronize: true,
-//   logging: false,
-//   subscribers: [],
-//   migrations: [],
-//   entities: [Users],
-//   namingStrategy: new SnakeNamingStrategy(),
-// });
-
 export class Database {
   constructor() {
     Database.appDataSource = new DataSource({
@@ -36,7 +18,6 @@ export class Database {
       namingStrategy: new SnakeNamingStrategy(),
     });
   }
-
   static appDataSource: DataSource;
 
   async init() {
