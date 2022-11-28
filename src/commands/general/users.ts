@@ -8,7 +8,7 @@ export = new Command(
     const users = await UsersService.getAllUsers();
     const arr = [];
     for (const user of users) {
-      arr.push(`${user.id}`);
+      arr.push(`${user.id} | ${user.name}`);
     }
     await interaction.followUp({ content: `Fetched users\r\n${arr.join("\r\n")}` });
   }

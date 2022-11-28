@@ -114,10 +114,6 @@ export default class Client extends DiscordClient {
     const guild = interaction.guild?.name || "NO GUILD";
     try {
       await command.run(this, interaction);
-      // todo: fix it
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      const options = command.builder.options;
       const params = {};
 
       if (interaction.options["_hoistedOptions"]) {
