@@ -8,9 +8,9 @@ export class Users {
   @Column("varchar", { nullable: true })
   name: string;
 
-  @Column("timestamp without time zone")
-  createdAt: number;
+  @Column("timestamp without time zone", { default: () => "CURRENT_TIMESTAMP" })
+  createdAt: string;
 
-  @Column("timestamp without time zone")
-  updatedAt: number;
+  @Column("timestamp without time zone", { default: () => "CURRENT_TIMESTAMP" })
+  updatedAt: string;
 }
