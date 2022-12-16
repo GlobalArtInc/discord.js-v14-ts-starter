@@ -21,5 +21,5 @@ You can deploy it to docker or kubernetes.
 # References
 1) [Discord.JS Docs](https://discord.js.org)
 2) [TypeORM](https://typeorm.io)
-3) [TypeORM](https://werf.io)
+3) [Werf](https://werf.io)
 4) [The twelve-factor app](https://12factor.net)
