@@ -1,0 +1,44 @@
+{{- if  (eq .Values.werf.env "dev") }}
+
+{{- else }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}-discord-prod
+  labels:
+    app: {{ .Chart.Name }}-discord-prod
+spec:
+  replicas: 1
+  selector:
+      matchLabels:
+        app: {{ .Chart.Name }}-discord-prod
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}-discord-prod
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}-discord-prod
+        image: '{{ index .Values.werf.image "discord-prod" }}'
+        
+        envFrom:
+        - configMapRef:
+            name: {{ .Chart.Name }}-common-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Chart.Name }}-service-discord-prod
+  labels:
+    app: {{ .Chart.Name }}-service-discord-prod
+spec:
+  clusterIP: None
+  selector:
+    app: {{ .Chart.Name }}-discord-prod
+  ports:
+  - name: {{ .Chart.Name }}-discord-prod
+    port: 80
+    protocol: TCP
+
+{{- end }}
