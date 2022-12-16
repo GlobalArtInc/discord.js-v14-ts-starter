@@ -13,9 +13,13 @@ A quick-start template for Discord.js v14 in Typescript that contains handling f
 
 You can deploy it to docker or kubernetes. 
 
+# Todo
+1) Deployment to kubernetes using Werf
+
 [Read the little guide](https://www.vultr.com/docs/how-to-run-a-discord-js-bot-on-a-docker-application/)
 
 # References
 1) [Discord.JS Docs](https://discord.js.org)
 2) [TypeORM](https://typeorm.io)
-3) [The twelve-factor app](https://12factor.net)
+3) [TypeORM](https://werf.io)
+4) [The twelve-factor app](https://12factor.net)
