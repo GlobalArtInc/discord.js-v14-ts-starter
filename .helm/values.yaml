@@ -1,0 +1,9 @@
+prod:
+  deployEnv: prod
+  discordServerId: '883817456911659048'
+stage:
+  deployEnv: stage
+  discordServerId: '883817456911659048'
+dev:
+  deployEnv: dev
+  discordServerId: '883817456911659048'

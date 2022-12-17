@@ -1,0 +1,1 @@
+werf helm secret values decrypt ../secret-values.yaml --dir ../../ | tee values.yaml

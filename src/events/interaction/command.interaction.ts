@@ -1,6 +1,6 @@
 import { Interaction } from "discord.js";
-import Client from "../../structures/Client";
 import { ClientEvent } from "../../structures/Event";
+import Client from "../../structures/Client";
 
 export = new ClientEvent("interactionCreate", async (client: Client, interaction: Interaction) => {
   if (!interaction.isCommand()) {

@@ -1,10 +1,11 @@
-import { SlashCommandBuilder } from "discord.js";
+import { CommandInteraction, SlashCommandBuilder } from "discord.js";
 import UsersService from "../../services/users.service";
+import Client from "../../structures/Client";
 import { Command } from "../../structures/Command";
 
 export = new Command(
   new SlashCommandBuilder().setName("get-users").setDescription("Get Users"),
-  async (_client, interaction) => {
+  async (_client: Client, interaction: CommandInteraction) => {
     const users = await UsersService.getAllUsers();
     const arr = [];
     for (const user of users) {

@@ -1,0 +1,57 @@
+project: discord-starter
+configVersion: 1
+deploy:
+  namespace: discord-starter
+  namespaceSlug: false
+
+{{ $_ := env "ENVNAME" | set . "env" }}
+{{ $_ := set . "BaseImage" "node:18" }}
+
+
+{{- if or (eq .env "prod") (eq .env "stage")  }}
+---
+artifact: discord-builder
+from: {{ .BaseImage }}
+git:
+- add: /
+  to: /workspace
+  stageDependencies:
+    setup:
+    - "*/**"
+    install:
+    - "package.json"
+    - "package-lock.json"
+ansible:
+  install:
+  - name: "Install libs"
+    shell: npm ci
+    args:
+      chdir: /workspace
+  setup:
+  - name: "Compile"
+    shell: npm run build
+    args:
+      chdir: /workspace
+
+---
+image: discord-prod
+from: {{ .BaseImage }}
+import:
+- artifact: discord-builder
+  add: /workspace/dist
+  to: /workspace/dist
+  after: setup
+- artifact: discord-builder
+  add: /workspace/package.json
+  to: /workspace/package.json
+  after: setup
+- artifact: discord-builder
+  add: /workspace/node_modules
+  to: /workspace/node_modules
+  after: setup
+docker:
+  WORKDIR: /workspace
+  USER: root
+  EXPOSE: ["80"]
+  CMD: "cd /workspace && node ./dist/main.js"
+{{- end }}

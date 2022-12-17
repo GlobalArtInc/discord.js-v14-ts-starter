@@ -87,7 +87,7 @@ export default class Client extends DiscordClient {
         LoggerService.info({
           message: "Registering to any server this bot is in",
         });
-        const fullRoute = Routes.applicationCommands(process.env.DISCORD_USER_ID);
+        const fullRoute = Routes.applicationCommands(this.user.id);
 
         rest.put(fullRoute, {
           body: commandDataArr,
@@ -97,7 +97,7 @@ export default class Client extends DiscordClient {
           message: `Only registering in guild with "DISCORD_SERVER_ID" environment variable`,
         });
         if (!process.env.DISCORD_SERVER_ID) throw "DISCORD_SERVER_ID environment variable was not set!";
-        const fullRoute = Routes.applicationGuildCommands(process.env.DISCORD_USER_ID, process.env.DISCORD_SERVER_ID);
+        const fullRoute = Routes.applicationGuildCommands(this.user.id, process.env.DISCORD_SERVER_ID);
 
         rest.put(fullRoute, {
           body: commandDataArr,
@@ -141,10 +141,5 @@ export default class Client extends DiscordClient {
     await this.init();
     await this.registerCommands();
     await this.login(process.env.DISCORD_TOKEN);
-    const { user } = this;
-    LoggerService.info({
-      type: "initialization",
-      username: user?.username,
-    });
   }
 }
