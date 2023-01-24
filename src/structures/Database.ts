@@ -1,30 +1,24 @@
-import { DataSource } from "typeorm";
-import LoggerService from "../services/logger.service";
-import { SnakeNamingStrategy } from "typeorm-naming-strategies";
+import { DataSource } from 'typeorm';
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 export class Database {
-  constructor() {
-    Database.appDataSource = new DataSource({
-      type: "postgres",
-      host: process.env.DB_HOST,
-      port: 5432,
-      database: process.env.DB_NAME,
-      username: process.env.DB_USER,
-      password: process.env.DB_PASS,
-      synchronize: true, // Do not use true for production
-      logging: false,
-      subscribers: [],
-      migrations: [],
-      entities: [__dirname + "/../entities/*.js"],
-      namingStrategy: new SnakeNamingStrategy(),
-    });
-  }
-  static appDataSource: DataSource;
+  static appDataSource = new DataSource({
+    type: 'postgres',
+    host: process.env.DB_HOST,
+    port: 5432,
+    database: process.env.DB_NAME,
+    username: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    synchronize: false, // Do not use true for production
+    logging: false,
+    subscribers: [],
+    migrations: [],
+    entities: [__dirname + '/../entities/*.js'],
+    namingStrategy: new SnakeNamingStrategy(),
+  });
 
   async init() {
     Database.appDataSource.initialize().then(() => {
-      LoggerService.info({
-        message: "Database has been initialized",
-      });
+      console.log('Database has been initialized');
     });
   }
 }

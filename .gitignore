@@ -1,6 +1,3 @@
-node_modules
-dist
+dist/
+node_modules/
 .env
-
-@types
-dist
