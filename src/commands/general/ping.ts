@@ -3,7 +3,7 @@ import { Command } from '../../structures/command';
 export default new Command({
   name: 'ping',
   description: 'Shows the ping of the bot.',
-  run: async ({ client, interaction, i18n }) => {
+  run: async ({ client, interaction }) => {
     const clientPing = await interaction.followUp({
       content: `Ping: ${client.ws.ping} ms.`,
     });

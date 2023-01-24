@@ -6,12 +6,11 @@ import {
   IntentsBitField,
   Partials,
 } from 'discord.js';
-import { CommandType } from '../typings/Command';
+import { CommandType } from '../typings/command';
 import glob from 'glob';
 import { promisify } from 'util';
 import { RegisterCommandsOptions } from '../typings/client';
 import { Event } from './event';
-import { Database } from './database';
 const globPromise = promisify(glob);
 
 export class ExtendedClient extends Client {

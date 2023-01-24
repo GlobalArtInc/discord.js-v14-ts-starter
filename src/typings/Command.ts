@@ -43,4 +43,5 @@ export interface AdditionalApplicationCommandData {
 export type CommandType = {
   userPermissions?: PermissionResolvable[];
   run: RunFunction;
-} & ChatInputApplicationCommandData & AdditionalApplicationCommandData;
+} & ChatInputApplicationCommandData &
+  AdditionalApplicationCommandData;
