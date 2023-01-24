@@ -1,2 +1,3 @@
 onlyForGuild: "The command is only available for servers"
 userAvatar: "User avatar for **[ {username} ]**"
+update: "Update"
