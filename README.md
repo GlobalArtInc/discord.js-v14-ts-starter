@@ -1,5 +1,8 @@
 # Discord v14 Typescript Starter
 
+# Deprecated
+**The current bot structure is deprecated. In my opinion, the current implementations by many developers are a complete mess. I recommend using a framework; the best option is [NestJS](https://nestjs.com) and the [NestCord](https://github.com/GlobalArtInc/nestcord) module.**
+
 A quick-start template for Discord.js v14 in Typescript that contains handling for commands, events, and interactions!
 
 # Installation
